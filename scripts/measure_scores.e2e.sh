@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ $# -eq 2 ]; then
-  gen=$(readlink -f $1)
-  ref_tree=$(readlink -f $2)
+  gen=$(greadlink -f $1)
+  ref_tree=$(greadlink -f $2)
 else
   echo "Usage: measure_scores hypothesis reference"
   exit 0

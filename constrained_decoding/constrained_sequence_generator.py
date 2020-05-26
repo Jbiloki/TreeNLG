@@ -5,6 +5,7 @@ import math
 import numpy as np
 import re
 import torch
+import csv
 
 from copy import deepcopy
 
@@ -21,6 +22,11 @@ class ConstrainedSequenceGenerator(SequenceGenerator):
         self.tgt_dict = tgt_dict
         self.order_constr = order_constr
         self.nt_map = self._get_nt(tgt_dict)
+        self.group = 0
+        self.ranking_file = 'ranking_dataset.csv'
+        with open(self.ranking_file, 'w') as f:
+            w = csv.DictWriter(f, ['tokens', 'score', 'attention', 'alignment', 'positional_scores', 'target','group'])
+            w.writeheader()
 
     def _get_nt(self, vocab):
         """
@@ -131,8 +137,8 @@ class ConstrainedSequenceGenerator(SequenceGenerator):
         # batch dimension goes first followed by source lengths
         bsz = input_size[0]
         src_len = input_size[1]
+        print(sample)
         beam_size = self.beam_size
-
         if self.match_source_len:
             max_len = src_lengths.max().item()
         else:
@@ -142,7 +148,6 @@ class ConstrainedSequenceGenerator(SequenceGenerator):
                 model.max_decoder_positions() - 1,
             )
         assert self.min_len <= max_len, 'min_len cannot be larger than max_len, please adjust these!'
-
         # compute the encoder output for each beam
         encoder_outs = model.forward_encoder(encoder_input)
         new_order = torch.arange(bsz).view(-1, 1).repeat(1, beam_size).view(-1)
@@ -254,18 +259,17 @@ class ConstrainedSequenceGenerator(SequenceGenerator):
 
                     if attn_clone is not None:
                         # remove padding tokens from attn scores
-                        hypo_attn = attn_clone[i]
+                        hypo_attn = attn_clone[i] 
                     else:
                         hypo_attn = None
-
                     return {
                         'tokens': tokens_clone[i],
                         'score': score,
                         'attention': hypo_attn,  # src_len x tgt_len
                         'alignment': None,
                         'positional_scores': pos_scores[i],
+                        'target': sample['target'][sent]
                     }
-
                 if len(finalized[sent]) < beam_size:
                     finalized[sent].append(get_hypo())
 
@@ -534,7 +538,19 @@ class ConstrainedSequenceGenerator(SequenceGenerator):
             # reorder incremental state in decoder
             reorder_state = active_bbsz_idx
 
+        print(finalized[0][0].keys())
         # sort by score descending
         for sent in range(len(finalized)):
             finalized[sent] = sorted(finalized[sent], key=lambda r: r['score'], reverse=True)
+        with open(self.ranking_file, 'a') as f:
+            for beam in range(len(finalized)):
+                for b in finalized[beam]:
+                    b = deepcopy(b)
+                    b['group'] = beam + (128*self.group)
+                    w = csv.DictWriter(f, b.keys())
+                    b['tokens'] = b['tokens'].tolist()
+                    b['target'] = b['target'].tolist()
+                    b['positional_scores'] = b['positional_scores'].tolist()
+                    w.writerow(b)
+        self.group += 1
         return finalized

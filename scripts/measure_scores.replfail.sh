@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [ $# -eq 3 ]; then
-  gen=$(readlink -f $1)
-  base=$(readlink -f $2)
-  ref_tree=$(readlink -f $3)
+  gen=$(greadlink -f $1)
+  base=$(greadlink -f $2)
+  ref_tree=$(greadlink -f $3)
 else
   echo "Usage: measure_scores hypothesis reference baseline"
   exit

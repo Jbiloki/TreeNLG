@@ -101,7 +101,6 @@ class TreeConstraints:
     Build and check constraints during constrained decoding. Each TreeConstraints
     object corresponds to one candidate in beam.
     """
-
     def __init__(
         self,
         input_tree: str,

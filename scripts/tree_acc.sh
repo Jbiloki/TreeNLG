@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -eq 1 ]; then
-  gen=$(readlink -f $1)
+  gen=$(greadlink -f $1)
 else
   echo "Usage: tree_acc hypothesis"
 fi

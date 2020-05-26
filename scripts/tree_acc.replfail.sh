@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ $# -eq 2 ]; then
-  gen=$(readlink -f $1)
-  base=$(readlink -f $2)
+  gen=$(greadlink -f $1)
+  base=$(greadlink -f $2)
 else
   echo "Usage: tree_acc hypothesis baseline"
   exit

@@ -24,7 +24,7 @@ bash scripts/tree_acc.sh $SAVEDIR/$gen
 bash scripts/count_failure_cases.sh $SAVEDIR/$gen
 
 if [[ "$gen" == *".constr."* ]]; then
-  base=$(readlink -f $SAVEDIR/$(echo $gen | sed 's/.constr//'))
+  base=$(greadlink -f $SAVEDIR/$(echo $gen | sed 's/.constr//'))
   echo -e "\nreplacing failures from $base"
   if [ ! -f $base ]; then
     echo "$base does not exist"
