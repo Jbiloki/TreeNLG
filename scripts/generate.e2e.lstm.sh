@@ -5,11 +5,13 @@ cd $(dirname $0)/..
 TMPDIR=/tmp
 data=e2e
 model=lstm
-SAVEDIR=checkpoints/$data.$model
-testpfx=test
+base=split_
+split=$1
+SAVEDIR="checkpoints/${base}${split}/e2e.lstm"
+testpfx=valid
 gen=gen.constr.txt
 
-fairseq-generate data-prep/$data \
+fairseq-generate "data-prep/stacked/${data}/${base}${split}" \
   --user-dir . `# delete this line to decode without constraints` \
   --gen-subset $testpfx \
   --path $SAVEDIR/checkpoint_best.pt \
@@ -19,7 +21,7 @@ fairseq-generate data-prep/$data \
   --max-len-a 2 --max-len-b 50 \
   > $SAVEDIR/$gen
 
-bash scripts/measure_scores.e2e.sh $SAVEDIR/$gen data-prep/$data/$testpfx.mr-ar.ar
+bash scripts/measure_scores.e2e.sh $SAVEDIR/$gen "data-prep/stacked/${data}/${base}${split}/${testpfx}.mr-ar.ar"
 bash scripts/tree_acc.sh $SAVEDIR/$gen
 bash scripts/count_failure_cases.sh $SAVEDIR/$gen
 

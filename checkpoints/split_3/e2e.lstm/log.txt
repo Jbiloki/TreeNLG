@@ -1,0 +1,185 @@
+2020-05-29 14:14:41 | INFO | fairseq_cli.train | Namespace(adam_betas='(0.9, 0.999)', adam_eps=1e-08, adaptive_softmax_cutoff='10000,50000,200000', all_gather_list_size=16384, arch='lstm', best_checkpoint_metric='loss', bpe=None, broadcast_buffers=False, bucket_cap_mb=25, clip_norm=0.1, cpu=False, criterion='label_smoothed_cross_entropy', curriculum=0, data='data-prep/stacked/e2e/split_3', dataset_impl='raw', ddp_backend='c10d', decoder_attention='1', decoder_dropout_in=0.2, decoder_dropout_out=0.2, decoder_embed_dim=300, decoder_embed_path=None, decoder_freeze_embed=False, decoder_hidden_size=128, decoder_layers=1, decoder_out_embed_dim=512, device_id=0, disable_validation=False, distributed_backend='nccl', distributed_init_method=None, distributed_no_spawn=False, distributed_port=-1, distributed_rank=0, distributed_world_size=1, dropout=0.2, empty_cache_freq=0, encoder_bidirectional=False, encoder_dropout_in=0.2, encoder_dropout_out=0.2, encoder_embed_dim=300, encoder_embed_path=None, encoder_freeze_embed=False, encoder_hidden_size=128, encoder_layers=1, eval_bleu=False, eval_bleu_args=None, eval_bleu_detok='space', eval_bleu_detok_args=None, eval_bleu_print_samples=False, eval_bleu_remove_bpe=None, eval_tokenized_bleu=False, fast_stat_sync=False, find_unused_parameters=False, fix_batches_to_gpus=False, fixed_validation_seed=None, fp16=False, fp16_init_scale=128, fp16_no_flatten_grads=False, fp16_scale_tolerance=0.0, fp16_scale_window=None, keep_best_checkpoints=-1, keep_interval_updates=-1, keep_last_epochs=-1, label_smoothing=0.1, left_pad_source='True', left_pad_target='False', load_alignments=False, log_format=None, log_interval=100, lr=[0.001], lr_patience=3.0, lr_scheduler='reduce_lr_on_plateau', lr_shrink=0.1, lr_threshold=0.0001, max_epoch=100, max_sentences=128, max_sentences_valid=128, max_source_positions=1024, max_target_positions=1024, max_tokens=None, max_tokens_valid=None, max_update=0, maximize_best_checkpoint_metric=False, memory_efficient_fp16=False, min_loss_scale=0.0001, min_lr=-1, no_epoch_checkpoints=True, no_last_checkpoints=False, no_progress_bar=False, no_save=False, no_save_optimizer_state=False, num_workers=1, optimizer='adam', optimizer_overrides='{}', patience=5, required_batch_size_multiple=8, reset_dataloader=False, reset_lr_scheduler=False, reset_meters=False, reset_optimizer=False, restore_file='checkpoint_last.pt', save_dir='checkpoints/split_3/e2e.lstm', save_interval=1, save_interval_updates=0, seed=1, sentence_avg=False, share_all_embeddings=False, share_decoder_input_output_embed=False, skip_invalid_size_inputs_valid_test=False, source_lang=None, target_lang=None, task='translation', tensorboard_logdir='', threshold_loss_scale=None, tokenizer=None, train_subset='train', truncate_source=False, update_freq=[1], upsample_primary=1, use_bmuf=False, use_old_adam=False, user_dir='.', valid_subset='valid', validate_interval=1, warmup_init_lr=-1, warmup_updates=0, weight_decay=0.0)
+2020-05-29 14:14:41 | INFO | fairseq.tasks.translation | [mr] dictionary: 64 types
+2020-05-29 14:14:41 | INFO | fairseq.tasks.translation | [ar] dictionary: 2840 types
+2020-05-29 14:14:42 | INFO | fairseq.data.data_utils | loaded 9346 examples from: data-prep/stacked/e2e/split_3/valid.mr-ar.mr
+2020-05-29 14:14:44 | INFO | fairseq.data.data_utils | loaded 9346 examples from: data-prep/stacked/e2e/split_3/valid.mr-ar.ar
+2020-05-29 14:14:44 | INFO | fairseq.tasks.translation | data-prep/stacked/e2e/split_3 valid mr-ar 9346 examples
+2020-05-29 14:14:44 | INFO | fairseq_cli.train | LSTMModel(
+  (encoder): LSTMEncoder(
+    (embed_tokens): Embedding(64, 300, padding_idx=1)
+    (lstm): LSTM(300, 128)
+  )
+  (decoder): LSTMDecoder(
+    (embed_tokens): Embedding(2840, 300, padding_idx=1)
+    (layers): ModuleList(
+      (0): LSTMCell(428, 128)
+    )
+    (attention): AttentionLayer(
+      (input_proj): Linear(in_features=128, out_features=128, bias=False)
+      (output_proj): Linear(in_features=256, out_features=128, bias=False)
+    )
+    (additional_fc): Linear(in_features=128, out_features=512, bias=True)
+    (fc_out): Linear(in_features=512, out_features=2840, bias=True)
+  )
+)
+2020-05-29 14:14:44 | INFO | fairseq_cli.train | model lstm, criterion LabelSmoothedCrossEntropyCriterion
+2020-05-29 14:14:44 | INFO | fairseq_cli.train | num. model params: 2949176 (num. trained: 2949176)
+2020-05-29 14:14:44 | INFO | fairseq_cli.train | training on 1 GPUs
+2020-05-29 14:14:44 | INFO | fairseq_cli.train | max tokens per GPU = None and max sentences per GPU = 128
+2020-05-29 14:14:44 | INFO | fairseq.trainer | no existing checkpoint found checkpoints/split_3/e2e.lstm/checkpoint_last.pt
+2020-05-29 14:14:44 | INFO | fairseq.trainer | loading train data for epoch 1
+2020-05-29 14:14:49 | INFO | fairseq.data.data_utils | loaded 37387 examples from: data-prep/stacked/e2e/split_3/train.mr-ar.mr
+2020-05-29 14:14:57 | INFO | fairseq.data.data_utils | loaded 37387 examples from: data-prep/stacked/e2e/split_3/train.mr-ar.ar
+2020-05-29 14:14:57 | INFO | fairseq.tasks.translation | data-prep/stacked/e2e/split_3 train mr-ar 37387 examples
+epoch 001 | loss 4.813 | nll_loss 3.681 | ppl 12.83 | wps 6791.6 | ups 1.47 | wpb 4613.8 | bsz 127.6 | num_updates 293 | lr 0.001 | gnorm 0.869 | clip 100 | train_wall 198 | wall 212
+epoch 001 | valid on 'valid' subset | loss 3.429 | nll_loss 2.113 | ppl 4.32 | wps 23988.7 | wpb 4580.7 | bsz 126.3 | num_updates 293
+2020-05-29 14:18:31 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 1 @ 293 updates, score 3.429) (writing took 0.059036081947851926 seconds)
+epoch 002 | loss 3.249 | nll_loss 1.917 | ppl 3.78 | wps 6358.6 | ups 1.38 | wpb 4613.8 | bsz 127.6 | num_updates 586 | lr 0.001 | gnorm 0.452 | clip 100 | train_wall 197 | wall 425
+epoch 002 | valid on 'valid' subset | loss 2.967 | nll_loss 1.597 | ppl 3.03 | wps 26214.7 | wpb 4580.7 | bsz 126.3 | num_updates 586 | best_loss 2.967
+2020-05-29 14:22:02 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 2 @ 586 updates, score 2.967) (writing took 0.04961429798277095 seconds)
+epoch 003 | loss 2.998 | nll_loss 1.638 | ppl 3.11 | wps 6183.7 | ups 1.34 | wpb 4613.8 | bsz 127.6 | num_updates 879 | lr 0.001 | gnorm 0.385 | clip 100 | train_wall 204 | wall 644
+epoch 003 | valid on 'valid' subset | loss 2.825 | nll_loss 1.436 | ppl 2.7 | wps 24592.8 | wpb 4580.7 | bsz 126.3 | num_updates 879 | best_loss 2.825
+2020-05-29 14:25:41 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 3 @ 879 updates, score 2.825) (writing took 0.04785438999533653 seconds)
+epoch 004 | loss 2.897 | nll_loss 1.527 | ppl 2.88 | wps 6113.8 | ups 1.33 | wpb 4613.8 | bsz 127.6 | num_updates 1172 | lr 0.001 | gnorm 0.345 | clip 100 | train_wall 205 | wall 865
+epoch 004 | valid on 'valid' subset | loss 2.766 | nll_loss 1.375 | ppl 2.59 | wps 25071 | wpb 4580.7 | bsz 126.3 | num_updates 1172 | best_loss 2.766
+2020-05-29 14:29:22 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 4 @ 1172 updates, score 2.766) (writing took 0.046760735975112766 seconds)
+epoch 005 | loss 2.838 | nll_loss 1.463 | ppl 2.76 | wps 6085.2 | ups 1.32 | wpb 4613.8 | bsz 127.6 | num_updates 1465 | lr 0.001 | gnorm 0.3 | clip 100 | train_wall 207 | wall 1087
+epoch 005 | valid on 'valid' subset | loss 2.732 | nll_loss 1.343 | ppl 2.54 | wps 26141 | wpb 4580.7 | bsz 126.3 | num_updates 1465 | best_loss 2.732
+2020-05-29 14:33:04 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 5 @ 1465 updates, score 2.732) (writing took 0.04523624695139006 seconds)
+epoch 006 | loss 2.804 | nll_loss 1.427 | ppl 2.69 | wps 6190.7 | ups 1.34 | wpb 4613.8 | bsz 127.6 | num_updates 1758 | lr 0.001 | gnorm 0.296 | clip 100 | train_wall 204 | wall 1305
+epoch 006 | valid on 'valid' subset | loss 2.716 | nll_loss 1.328 | ppl 2.51 | wps 24146.9 | wpb 4580.7 | bsz 126.3 | num_updates 1758 | best_loss 2.716
+2020-05-29 14:36:43 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 6 @ 1758 updates, score 2.716) (writing took 0.050141855026595294 seconds)
+epoch 007 | loss 2.773 | nll_loss 1.393 | ppl 2.63 | wps 6239.8 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 2051 | lr 0.001 | gnorm 0.268 | clip 100 | train_wall 201 | wall 1522
+epoch 007 | valid on 'valid' subset | loss 2.714 | nll_loss 1.308 | ppl 2.48 | wps 25216.1 | wpb 4580.7 | bsz 126.3 | num_updates 2051 | best_loss 2.714
+2020-05-29 14:40:19 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 7 @ 2051 updates, score 2.714) (writing took 0.04792942199856043 seconds)
+epoch 008 | loss 2.751 | nll_loss 1.369 | ppl 2.58 | wps 6266.9 | ups 1.36 | wpb 4613.8 | bsz 127.6 | num_updates 2344 | lr 0.001 | gnorm 0.264 | clip 100 | train_wall 200 | wall 1738
+epoch 008 | valid on 'valid' subset | loss 2.681 | nll_loss 1.286 | ppl 2.44 | wps 25600.8 | wpb 4580.7 | bsz 126.3 | num_updates 2344 | best_loss 2.681
+2020-05-29 14:43:55 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 8 @ 2344 updates, score 2.681) (writing took 0.04711447097361088 seconds)
+epoch 009 | loss 2.735 | nll_loss 1.351 | ppl 2.55 | wps 6231.6 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 2637 | lr 0.001 | gnorm 0.254 | clip 100 | train_wall 202 | wall 1955
+epoch 009 | valid on 'valid' subset | loss 2.662 | nll_loss 1.265 | ppl 2.4 | wps 24415.2 | wpb 4580.7 | bsz 126.3 | num_updates 2637 | best_loss 2.662
+2020-05-29 14:47:32 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 9 @ 2637 updates, score 2.662) (writing took 0.05642693501431495 seconds)
+epoch 010 | loss 2.717 | nll_loss 1.332 | ppl 2.52 | wps 6275.2 | ups 1.36 | wpb 4613.8 | bsz 127.6 | num_updates 2930 | lr 0.001 | gnorm 0.238 | clip 100 | train_wall 200 | wall 2170
+epoch 010 | valid on 'valid' subset | loss 2.66 | nll_loss 1.265 | ppl 2.4 | wps 24747 | wpb 4580.7 | bsz 126.3 | num_updates 2930 | best_loss 2.66
+2020-05-29 14:51:08 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 10 @ 2930 updates, score 2.66) (writing took 0.04752133501460776 seconds)
+epoch 011 | loss 2.706 | nll_loss 1.32 | ppl 2.5 | wps 6270.6 | ups 1.36 | wpb 4613.8 | bsz 127.6 | num_updates 3223 | lr 0.001 | gnorm 0.236 | clip 100 | train_wall 200 | wall 2386
+epoch 011 | valid on 'valid' subset | loss 2.647 | nll_loss 1.256 | ppl 2.39 | wps 26131.5 | wpb 4580.7 | bsz 126.3 | num_updates 3223 | best_loss 2.647
+2020-05-29 14:54:43 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 11 @ 3223 updates, score 2.647) (writing took 0.047770175035111606 seconds)
+epoch 012 | loss 2.693 | nll_loss 1.306 | ppl 2.47 | wps 6303.5 | ups 1.37 | wpb 4613.8 | bsz 127.6 | num_updates 3516 | lr 0.001 | gnorm 0.232 | clip 100 | train_wall 200 | wall 2600
+epoch 012 | valid on 'valid' subset | loss 2.643 | nll_loss 1.259 | ppl 2.39 | wps 25927.5 | wpb 4580.7 | bsz 126.3 | num_updates 3516 | best_loss 2.643
+2020-05-29 14:58:17 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 12 @ 3516 updates, score 2.643) (writing took 0.04592412104830146 seconds)
+epoch 013 | loss 2.683 | nll_loss 1.296 | ppl 2.45 | wps 6297.2 | ups 1.36 | wpb 4613.8 | bsz 127.6 | num_updates 3809 | lr 0.001 | gnorm 0.224 | clip 100 | train_wall 200 | wall 2815
+epoch 013 | valid on 'valid' subset | loss 2.64 | nll_loss 1.244 | ppl 2.37 | wps 27650 | wpb 4580.7 | bsz 126.3 | num_updates 3809 | best_loss 2.64
+2020-05-29 15:01:51 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 13 @ 3809 updates, score 2.64) (writing took 0.04865381104173139 seconds)
+epoch 014 | loss 2.673 | nll_loss 1.284 | ppl 2.43 | wps 6315.1 | ups 1.37 | wpb 4613.8 | bsz 127.6 | num_updates 4102 | lr 0.001 | gnorm 0.22 | clip 100 | train_wall 200 | wall 3029
+epoch 014 | valid on 'valid' subset | loss 2.627 | nll_loss 1.232 | ppl 2.35 | wps 25775.1 | wpb 4580.7 | bsz 126.3 | num_updates 4102 | best_loss 2.627
+2020-05-29 15:05:26 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 14 @ 4102 updates, score 2.627) (writing took 0.04699362500105053 seconds)
+epoch 015 | loss 2.665 | nll_loss 1.275 | ppl 2.42 | wps 6242.4 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 4395 | lr 0.001 | gnorm 0.218 | clip 100 | train_wall 202 | wall 3245
+epoch 015 | valid on 'valid' subset | loss 2.632 | nll_loss 1.232 | ppl 2.35 | wps 25294.2 | wpb 4580.7 | bsz 126.3 | num_updates 4395 | best_loss 2.627
+2020-05-29 15:09:03 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 15 @ 4395 updates, score 2.632) (writing took 0.01487485901452601 seconds)
+epoch 016 | loss 2.659 | nll_loss 1.269 | ppl 2.41 | wps 6303.7 | ups 1.37 | wpb 4613.8 | bsz 127.6 | num_updates 4688 | lr 0.001 | gnorm 0.218 | clip 100 | train_wall 199 | wall 3460
+epoch 016 | valid on 'valid' subset | loss 2.623 | nll_loss 1.226 | ppl 2.34 | wps 24927 | wpb 4580.7 | bsz 126.3 | num_updates 4688 | best_loss 2.623
+2020-05-29 15:12:37 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 16 @ 4688 updates, score 2.623) (writing took 0.04540872201323509 seconds)
+epoch 017 | loss 2.652 | nll_loss 1.26 | ppl 2.4 | wps 6251.8 | ups 1.36 | wpb 4613.8 | bsz 127.6 | num_updates 4981 | lr 0.001 | gnorm 0.214 | clip 100 | train_wall 201 | wall 3676
+epoch 017 | valid on 'valid' subset | loss 2.621 | nll_loss 1.217 | ppl 2.32 | wps 27884.8 | wpb 4580.7 | bsz 126.3 | num_updates 4981 | best_loss 2.621
+2020-05-29 15:16:12 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 17 @ 4981 updates, score 2.621) (writing took 0.04665373399620876 seconds)
+epoch 018 | loss 2.645 | nll_loss 1.253 | ppl 2.38 | wps 6362.5 | ups 1.38 | wpb 4613.8 | bsz 127.6 | num_updates 5274 | lr 0.001 | gnorm 0.212 | clip 100 | train_wall 199 | wall 3888
+epoch 018 | valid on 'valid' subset | loss 2.613 | nll_loss 1.215 | ppl 2.32 | wps 25621.3 | wpb 4580.7 | bsz 126.3 | num_updates 5274 | best_loss 2.613
+2020-05-29 15:19:46 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 18 @ 5274 updates, score 2.613) (writing took 0.049743595009204 seconds)
+epoch 019 | loss 2.639 | nll_loss 1.248 | ppl 2.37 | wps 6299.9 | ups 1.37 | wpb 4613.8 | bsz 127.6 | num_updates 5567 | lr 0.001 | gnorm 0.213 | clip 100 | train_wall 200 | wall 4103
+epoch 019 | valid on 'valid' subset | loss 2.61 | nll_loss 1.209 | ppl 2.31 | wps 26953.9 | wpb 4580.7 | bsz 126.3 | num_updates 5567 | best_loss 2.61
+2020-05-29 15:23:20 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 19 @ 5567 updates, score 2.61) (writing took 0.04605900699971244 seconds)
+epoch 020 | loss 2.636 | nll_loss 1.243 | ppl 2.37 | wps 6284.2 | ups 1.36 | wpb 4613.8 | bsz 127.6 | num_updates 5860 | lr 0.001 | gnorm 0.211 | clip 100 | train_wall 201 | wall 4318
+epoch 020 | valid on 'valid' subset | loss 2.61 | nll_loss 1.211 | ppl 2.31 | wps 26458.9 | wpb 4580.7 | bsz 126.3 | num_updates 5860 | best_loss 2.61
+2020-05-29 15:26:55 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 20 @ 5860 updates, score 2.61) (writing took 0.05051650002133101 seconds)
+epoch 021 | loss 2.629 | nll_loss 1.236 | ppl 2.36 | wps 6245 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 6153 | lr 0.001 | gnorm 0.207 | clip 100 | train_wall 202 | wall 4535
+epoch 021 | valid on 'valid' subset | loss 2.631 | nll_loss 1.222 | ppl 2.33 | wps 24078 | wpb 4580.7 | bsz 126.3 | num_updates 6153 | best_loss 2.61
+2020-05-29 15:30:33 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 21 @ 6153 updates, score 2.631) (writing took 0.023447255021892488 seconds)
+epoch 022 | loss 2.625 | nll_loss 1.232 | ppl 2.35 | wps 6272.9 | ups 1.36 | wpb 4613.8 | bsz 127.6 | num_updates 6446 | lr 0.001 | gnorm 0.208 | clip 100 | train_wall 200 | wall 4750
+epoch 022 | valid on 'valid' subset | loss 2.624 | nll_loss 1.222 | ppl 2.33 | wps 27007.9 | wpb 4580.7 | bsz 126.3 | num_updates 6446 | best_loss 2.61
+2020-05-29 15:34:07 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 22 @ 6446 updates, score 2.624) (writing took 0.018331750005017966 seconds)
+epoch 023 | loss 2.621 | nll_loss 1.226 | ppl 2.34 | wps 6319.7 | ups 1.37 | wpb 4613.8 | bsz 127.6 | num_updates 6739 | lr 0.001 | gnorm 0.206 | clip 100 | train_wall 200 | wall 4964
+epoch 023 | valid on 'valid' subset | loss 2.608 | nll_loss 1.218 | ppl 2.33 | wps 26682 | wpb 4580.7 | bsz 126.3 | num_updates 6739 | best_loss 2.608
+2020-05-29 15:37:41 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 23 @ 6739 updates, score 2.608) (writing took 0.04902547301026061 seconds)
+epoch 024 | loss 2.616 | nll_loss 1.222 | ppl 2.33 | wps 5988.1 | ups 1.3 | wpb 4613.8 | bsz 127.6 | num_updates 7032 | lr 0.001 | gnorm 0.205 | clip 100 | train_wall 211 | wall 5190
+epoch 024 | valid on 'valid' subset | loss 2.602 | nll_loss 1.212 | ppl 2.32 | wps 24727.3 | wpb 4580.7 | bsz 126.3 | num_updates 7032 | best_loss 2.602
+2020-05-29 15:41:28 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 24 @ 7032 updates, score 2.602) (writing took 0.047858942998573184 seconds)
+epoch 025 | loss 2.614 | nll_loss 1.219 | ppl 2.33 | wps 5986.4 | ups 1.3 | wpb 4613.8 | bsz 127.6 | num_updates 7325 | lr 0.001 | gnorm 0.205 | clip 100 | train_wall 210 | wall 5416
+epoch 025 | valid on 'valid' subset | loss 2.601 | nll_loss 1.206 | ppl 2.31 | wps 23608.2 | wpb 4580.7 | bsz 126.3 | num_updates 7325 | best_loss 2.601
+2020-05-29 15:45:14 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 25 @ 7325 updates, score 2.601) (writing took 0.046485618979204446 seconds)
+epoch 026 | loss 2.61 | nll_loss 1.215 | ppl 2.32 | wps 5896.6 | ups 1.28 | wpb 4613.8 | bsz 127.6 | num_updates 7618 | lr 0.001 | gnorm 0.207 | clip 100 | train_wall 213 | wall 5645
+epoch 026 | valid on 'valid' subset | loss 2.606 | nll_loss 1.206 | ppl 2.31 | wps 23773.6 | wpb 4580.7 | bsz 126.3 | num_updates 7618 | best_loss 2.601
+2020-05-29 15:49:03 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 26 @ 7618 updates, score 2.606) (writing took 0.015958295029122382 seconds)
+epoch 027 | loss 2.606 | nll_loss 1.21 | ppl 2.31 | wps 5980.8 | ups 1.3 | wpb 4613.8 | bsz 127.6 | num_updates 7911 | lr 0.001 | gnorm 0.202 | clip 100 | train_wall 210 | wall 5871
+epoch 027 | valid on 'valid' subset | loss 2.61 | nll_loss 1.209 | ppl 2.31 | wps 23066.5 | wpb 4580.7 | bsz 126.3 | num_updates 7911 | best_loss 2.601
+2020-05-29 15:52:50 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 27 @ 7911 updates, score 2.61) (writing took 0.017729529994539917 seconds)
+epoch 028 | loss 2.603 | nll_loss 1.207 | ppl 2.31 | wps 6075.3 | ups 1.32 | wpb 4613.8 | bsz 127.6 | num_updates 8204 | lr 0.001 | gnorm 0.2 | clip 100 | train_wall 206 | wall 6093
+epoch 028 | valid on 'valid' subset | loss 2.6 | nll_loss 1.193 | ppl 2.29 | wps 26392.6 | wpb 4580.7 | bsz 126.3 | num_updates 8204 | best_loss 2.6
+2020-05-29 15:56:30 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 28 @ 8204 updates, score 2.6) (writing took 0.04648413200629875 seconds)
+epoch 029 | loss 2.599 | nll_loss 1.203 | ppl 2.3 | wps 6223.8 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 8497 | lr 0.001 | gnorm 0.201 | clip 100 | train_wall 203 | wall 6311
+epoch 029 | valid on 'valid' subset | loss 2.597 | nll_loss 1.202 | ppl 2.3 | wps 24752.1 | wpb 4580.7 | bsz 126.3 | num_updates 8497 | best_loss 2.597
+2020-05-29 16:00:08 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 29 @ 8497 updates, score 2.597) (writing took 0.04554797598393634 seconds)
+epoch 030 | loss 2.597 | nll_loss 1.2 | ppl 2.3 | wps 6247.1 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 8790 | lr 0.001 | gnorm 0.202 | clip 100 | train_wall 201 | wall 6527
+epoch 030 | valid on 'valid' subset | loss 2.605 | nll_loss 1.193 | ppl 2.29 | wps 27238.8 | wpb 4580.7 | bsz 126.3 | num_updates 8790 | best_loss 2.597
+2020-05-29 16:03:43 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 30 @ 8790 updates, score 2.605) (writing took 0.016665184986777604 seconds)
+epoch 031 | loss 2.595 | nll_loss 1.198 | ppl 2.29 | wps 6218.1 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 9083 | lr 0.001 | gnorm 0.205 | clip 100 | train_wall 203 | wall 6744
+epoch 031 | valid on 'valid' subset | loss 2.601 | nll_loss 1.204 | ppl 2.3 | wps 26017.1 | wpb 4580.7 | bsz 126.3 | num_updates 9083 | best_loss 2.597
+2020-05-29 16:07:22 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 31 @ 9083 updates, score 2.601) (writing took 0.01660440204432234 seconds)
+epoch 032 | loss 2.591 | nll_loss 1.194 | ppl 2.29 | wps 6121.4 | ups 1.33 | wpb 4613.8 | bsz 127.6 | num_updates 9376 | lr 0.001 | gnorm 0.203 | clip 100 | train_wall 206 | wall 6965
+epoch 032 | valid on 'valid' subset | loss 2.597 | nll_loss 1.191 | ppl 2.28 | wps 25394.7 | wpb 4580.7 | bsz 126.3 | num_updates 9376 | best_loss 2.597
+2020-05-29 16:11:03 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 32 @ 9376 updates, score 2.597) (writing took 0.051486717944499105 seconds)
+epoch 033 | loss 2.589 | nll_loss 1.191 | ppl 2.28 | wps 6030 | ups 1.31 | wpb 4613.8 | bsz 127.6 | num_updates 9669 | lr 0.001 | gnorm 0.202 | clip 100 | train_wall 209 | wall 7189
+epoch 033 | valid on 'valid' subset | loss 2.594 | nll_loss 1.193 | ppl 2.29 | wps 22035.7 | wpb 4580.7 | bsz 126.3 | num_updates 9669 | best_loss 2.594
+2020-05-29 16:14:49 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 33 @ 9669 updates, score 2.594) (writing took 0.05201353202573955 seconds)
+epoch 034 | loss 2.588 | nll_loss 1.19 | ppl 2.28 | wps 5962.4 | ups 1.29 | wpb 4613.8 | bsz 127.6 | num_updates 9962 | lr 0.001 | gnorm 0.201 | clip 100 | train_wall 209 | wall 7416
+epoch 034 | valid on 'valid' subset | loss 2.592 | nll_loss 1.188 | ppl 2.28 | wps 23490.1 | wpb 4580.7 | bsz 126.3 | num_updates 9962 | best_loss 2.592
+2020-05-29 16:18:35 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 34 @ 9962 updates, score 2.592) (writing took 0.04920630902051926 seconds)
+epoch 035 | loss 2.584 | nll_loss 1.186 | ppl 2.28 | wps 5985.9 | ups 1.3 | wpb 4613.8 | bsz 127.6 | num_updates 10255 | lr 0.001 | gnorm 0.2 | clip 100 | train_wall 209 | wall 7642
+epoch 035 | valid on 'valid' subset | loss 2.59 | nll_loss 1.186 | ppl 2.28 | wps 24080.2 | wpb 4580.7 | bsz 126.3 | num_updates 10255 | best_loss 2.59
+2020-05-29 16:22:20 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 35 @ 10255 updates, score 2.59) (writing took 0.05400446802377701 seconds)
+epoch 036 | loss 2.581 | nll_loss 1.183 | ppl 2.27 | wps 6127.4 | ups 1.33 | wpb 4613.8 | bsz 127.6 | num_updates 10548 | lr 0.001 | gnorm 0.199 | clip 100 | train_wall 205 | wall 7863
+epoch 036 | valid on 'valid' subset | loss 2.591 | nll_loss 1.185 | ppl 2.27 | wps 26006.1 | wpb 4580.7 | bsz 126.3 | num_updates 10548 | best_loss 2.59
+2020-05-29 16:26:00 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 36 @ 10548 updates, score 2.591) (writing took 0.0163233460043557 seconds)
+epoch 037 | loss 2.579 | nll_loss 1.18 | ppl 2.27 | wps 6156.6 | ups 1.33 | wpb 4613.8 | bsz 127.6 | num_updates 10841 | lr 0.001 | gnorm 0.199 | clip 100 | train_wall 205 | wall 8082
+epoch 037 | valid on 'valid' subset | loss 2.593 | nll_loss 1.192 | ppl 2.28 | wps 27504.6 | wpb 4580.7 | bsz 126.3 | num_updates 10841 | best_loss 2.59
+2020-05-29 16:29:39 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 37 @ 10841 updates, score 2.593) (writing took 0.01734250597655773 seconds)
+epoch 038 | loss 2.579 | nll_loss 1.18 | ppl 2.27 | wps 6215.6 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 11134 | lr 0.001 | gnorm 0.197 | clip 100 | train_wall 203 | wall 8300
+epoch 038 | valid on 'valid' subset | loss 2.593 | nll_loss 1.194 | ppl 2.29 | wps 24294.1 | wpb 4580.7 | bsz 126.3 | num_updates 11134 | best_loss 2.59
+2020-05-29 16:33:18 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 38 @ 11134 updates, score 2.593) (writing took 0.022811048023868352 seconds)
+epoch 039 | loss 2.575 | nll_loss 1.176 | ppl 2.26 | wps 6156.8 | ups 1.33 | wpb 4613.8 | bsz 127.6 | num_updates 11427 | lr 0.001 | gnorm 0.197 | clip 100 | train_wall 204 | wall 8519
+epoch 039 | valid on 'valid' subset | loss 2.591 | nll_loss 1.19 | ppl 2.28 | wps 27612.7 | wpb 4580.7 | bsz 126.3 | num_updates 11427 | best_loss 2.59
+2020-05-29 16:36:56 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 39 @ 11427 updates, score 2.591) (writing took 0.015549611009191722 seconds)
+epoch 040 | loss 2.547 | nll_loss 1.145 | ppl 2.21 | wps 6138.9 | ups 1.33 | wpb 4613.8 | bsz 127.6 | num_updates 11720 | lr 0.0001 | gnorm 0.175 | clip 100 | train_wall 206 | wall 8739
+epoch 040 | valid on 'valid' subset | loss 2.576 | nll_loss 1.173 | ppl 2.26 | wps 24199.8 | wpb 4580.7 | bsz 126.3 | num_updates 11720 | best_loss 2.576
+2020-05-29 16:40:38 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 40 @ 11720 updates, score 2.576) (writing took 0.05123936396557838 seconds)
+epoch 041 | loss 2.542 | nll_loss 1.14 | ppl 2.2 | wps 6242 | ups 1.35 | wpb 4613.8 | bsz 127.6 | num_updates 12013 | lr 0.0001 | gnorm 0.174 | clip 100 | train_wall 201 | wall 8956
+epoch 041 | valid on 'valid' subset | loss 2.575 | nll_loss 1.174 | ppl 2.26 | wps 24975.5 | wpb 4580.7 | bsz 126.3 | num_updates 12013 | best_loss 2.575
+2020-05-29 16:44:14 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 41 @ 12013 updates, score 2.575) (writing took 0.05156350799370557 seconds)
+epoch 042 | loss 2.54 | nll_loss 1.138 | ppl 2.2 | wps 6318.2 | ups 1.37 | wpb 4613.8 | bsz 127.6 | num_updates 12306 | lr 0.0001 | gnorm 0.176 | clip 100 | train_wall 199 | wall 9170
+epoch 042 | valid on 'valid' subset | loss 2.574 | nll_loss 1.172 | ppl 2.25 | wps 26858.9 | wpb 4580.7 | bsz 126.3 | num_updates 12306 | best_loss 2.574
+2020-05-29 16:47:47 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 42 @ 12306 updates, score 2.574) (writing took 0.04314120300114155 seconds)
+epoch 043 | loss 2.538 | nll_loss 1.136 | ppl 2.2 | wps 6342.9 | ups 1.37 | wpb 4613.8 | bsz 127.6 | num_updates 12599 | lr 0.0001 | gnorm 0.177 | clip 100 | train_wall 199 | wall 9383
+epoch 043 | valid on 'valid' subset | loss 2.574 | nll_loss 1.171 | ppl 2.25 | wps 27094.8 | wpb 4580.7 | bsz 126.3 | num_updates 12599 | best_loss 2.574
+2020-05-29 16:51:20 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 43 @ 12599 updates, score 2.574) (writing took 0.04107707500224933 seconds)
+epoch 044 | loss 2.538 | nll_loss 1.136 | ppl 2.2 | wps 6455.5 | ups 1.4 | wpb 4613.8 | bsz 127.6 | num_updates 12892 | lr 0.0001 | gnorm 0.178 | clip 100 | train_wall 195 | wall 9593
+epoch 044 | valid on 'valid' subset | loss 2.574 | nll_loss 1.171 | ppl 2.25 | wps 25451.1 | wpb 4580.7 | bsz 126.3 | num_updates 12892 | best_loss 2.574
+2020-05-29 16:54:50 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 44 @ 12892 updates, score 2.574) (writing took 0.04280915902927518 seconds)
+epoch 045 | loss 2.537 | nll_loss 1.134 | ppl 2.19 | wps 6417.6 | ups 1.39 | wpb 4613.8 | bsz 127.6 | num_updates 13185 | lr 0.0001 | gnorm 0.179 | clip 100 | train_wall 196 | wall 9803
+epoch 045 | valid on 'valid' subset | loss 2.573 | nll_loss 1.171 | ppl 2.25 | wps 26915.5 | wpb 4580.7 | bsz 126.3 | num_updates 13185 | best_loss 2.573
+2020-05-29 16:58:20 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 45 @ 13185 updates, score 2.573) (writing took 0.0401450379868038 seconds)
+epoch 046 | loss 2.537 | nll_loss 1.134 | ppl 2.2 | wps 6394.7 | ups 1.39 | wpb 4613.8 | bsz 127.6 | num_updates 13478 | lr 0.0001 | gnorm 0.178 | clip 100 | train_wall 197 | wall 10015
+epoch 046 | valid on 'valid' subset | loss 2.574 | nll_loss 1.171 | ppl 2.25 | wps 26179.3 | wpb 4580.7 | bsz 126.3 | num_updates 13478 | best_loss 2.573
+2020-05-29 17:01:52 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 46 @ 13478 updates, score 2.574) (writing took 0.015010385017376393 seconds)
+epoch 047 | loss 2.535 | nll_loss 1.133 | ppl 2.19 | wps 6287.2 | ups 1.36 | wpb 4613.8 | bsz 127.6 | num_updates 13771 | lr 0.0001 | gnorm 0.179 | clip 100 | train_wall 200 | wall 10230
+epoch 047 | valid on 'valid' subset | loss 2.573 | nll_loss 1.171 | ppl 2.25 | wps 25987.5 | wpb 4580.7 | bsz 126.3 | num_updates 13771 | best_loss 2.573
+2020-05-29 17:05:27 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 47 @ 13771 updates, score 2.573) (writing took 0.045100100978743285 seconds)
+epoch 048 | loss 2.535 | nll_loss 1.132 | ppl 2.19 | wps 6542.1 | ups 1.42 | wpb 4613.8 | bsz 127.6 | num_updates 14064 | lr 0.0001 | gnorm 0.178 | clip 100 | train_wall 192 | wall 10436
+epoch 048 | valid on 'valid' subset | loss 2.574 | nll_loss 1.17 | ppl 2.25 | wps 27438.5 | wpb 4580.7 | bsz 126.3 | num_updates 14064 | best_loss 2.573
+2020-05-29 17:08:53 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 48 @ 14064 updates, score 2.574) (writing took 0.015497162996325642 seconds)
+epoch 049 | loss 2.534 | nll_loss 1.131 | ppl 2.19 | wps 6500.7 | ups 1.41 | wpb 4613.8 | bsz 127.6 | num_updates 14357 | lr 0.0001 | gnorm 0.178 | clip 100 | train_wall 194 | wall 10644
+epoch 049 | valid on 'valid' subset | loss 2.574 | nll_loss 1.172 | ppl 2.25 | wps 29205.5 | wpb 4580.7 | bsz 126.3 | num_updates 14357 | best_loss 2.573
+2020-05-29 17:12:20 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_last.pt (epoch 49 @ 14357 updates, score 2.574) (writing took 0.015102570003364235 seconds)
+epoch 050 | loss 2.532 | nll_loss 1.129 | ppl 2.19 | wps 6596.7 | ups 1.43 | wpb 4613.8 | bsz 127.6 | num_updates 14650 | lr 1e-05 | gnorm 0.183 | clip 100 | train_wall 192 | wall 10849
+epoch 050 | valid on 'valid' subset | loss 2.573 | nll_loss 1.17 | ppl 2.25 | wps 29073.3 | wpb 4580.7 | bsz 126.3 | num_updates 14650 | best_loss 2.573
+2020-05-29 17:15:45 | INFO | fairseq.checkpoint_utils | saved checkpoint checkpoints/split_3/e2e.lstm/checkpoint_best.pt (epoch 50 @ 14650 updates, score 2.573) (writing took 0.03961587400408462 seconds)
+2020-05-29 17:15:45 | INFO | fairseq_cli.train | early stop since valid performance hasn't improved for last 5 runs
+2020-05-29 17:15:45 | INFO | fairseq_cli.train | done training in 10847.8 seconds

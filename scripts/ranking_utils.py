@@ -1,4 +1,5 @@
 from typing import List
+from random import shuffle
 from argparse import ArgumentParser
 import csv
 from pathlib import Path
@@ -12,17 +13,29 @@ def split_files(files: List[str], n: int, dataset: str):
             for row in filedata:
                 data.append(row)
     split_size = len(data) // n
+    shuffle(data)
     print('Split sizes: {}'.format(split_size))
-    base_path = 'data/stacked/{}'.format(dataset)
-    Path(base_path).mkdir(parents=True, exist_ok=True)
+    groups = []
     for i in range(n):
         start = i*split_size
-        with open('{}/split_{}'.format(base_path, i), 'w') as file:
+        if i != n-1:
+            groups.append(data[start:start+split_size])
+        else:
+            groups.append(data[start:])
+    base_path = 'data/stacked/{}'.format(dataset)
+    for i in range(n):
+        Path('{}/split_{}'.format(base_path, i)).mkdir(parents=True, exist_ok=True)
+        train = []
+        val = groups[i]
+        for j in range(n):
+            if i != j:
+                train.extend(groups[j])
+        with open('{}/split_{}/train.tsv'.format(base_path, i), 'w') as file:
             writer = csv.writer(file, delimiter='\t', lineterminator='\n')
-            if i != n-1:
-                writer.writerows(data[start:start+split_size])
-            else:
-                writer.writerows(data[start:])
+            writer.writerows(train)
+        with open('{}/split_{}/val.tsv'.format(base_path, i), 'w') as file:
+            writer = csv.writer(file, delimiter='\t', lineterminator='\n')
+            writer.writerows(val)
     print('Done...')
 
 if __name__ == '__main__':

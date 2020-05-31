@@ -4,11 +4,13 @@ cd $(dirname $0)/..
 
 TMPDIR=/tmp
 CUDA_VISIBLE_DEVICES=0
-SAVEDIR=checkpoints/e2e.lstm
+base=split_
+split=$1
+SAVEDIR="checkpoints/${base}${split}/e2e.lstm"
 
 mkdir -p $SAVEDIR
 
-fairseq-train data-prep/e2e \
+fairseq-train "data-prep/stacked/e2e/${base}${split}" \
   --user-dir . \
   --task translation --arch lstm \
   --max-epoch 100 --patience 5 \
