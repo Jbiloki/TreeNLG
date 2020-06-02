@@ -8,7 +8,7 @@ model=lstm
 base=split_
 split=$1
 SAVEDIR="checkpoints/${base}${split}/e2e.lstm"
-testpfx=valid
+testpfx=test
 gen=gen.constr.txt
 
 fairseq-generate "data-prep/stacked/${data}/${base}${split}" \

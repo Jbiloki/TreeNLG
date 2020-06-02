@@ -5,6 +5,7 @@ import math
 import numpy as np
 import re
 import torch
+from torch import nn
 import csv
 
 from copy import deepcopy
@@ -15,6 +16,29 @@ from fairseq.sequence_generator import SequenceGenerator
 from .constraint_checking import TreeConstraints
 
 
+class DoubleHead(nn.Module):
+  def __init__(self):
+    super(DoubleHead, self).__init__()
+    self.lstm = nn.LSTM(1, 64)
+    self.dense_1 = nn.Linear(64, 32)
+    self.dense_2 = nn.Linear(1, 1)
+    self.dense_3 = nn.Linear(33, 1)
+    self.relu = nn.ReLU()
+
+  def forward(self, input_1, input_2):
+    out, _ = self.lstm(input_1)
+    out = self.relu(out)
+    out = self.dense_1(out)
+    out = self.relu(out)
+    out2 = self.dense_2(input_2)
+    out = torch.sum(out, dim=1)
+    out2 = self.relu(out2)
+    combined = torch.cat((out.view(out.size(0), -1),
+                          out2.view(out2.size(0), -1)), dim=1)
+    out = self.dense_3(combined)
+    return out
+    
+
 class ConstrainedSequenceGenerator(SequenceGenerator):
     def __init__(self, src_dict, tgt_dict, order_constr, **kwargs):
         super().__init__(tgt_dict, **kwargs)
@@ -23,10 +47,23 @@ class ConstrainedSequenceGenerator(SequenceGenerator):
         self.order_constr = order_constr
         self.nt_map = self._get_nt(tgt_dict)
         self.group = 0
+        self.ranker_path = '/Users/nguyen/src/npp/TreeNLG/ranker_state.pts'
+        self.max_len = 133
+        self.model = DoubleHead()
+        self.model.load_state_dict(torch.load(self.ranker_path))
+        self.model.eval()
         self.ranking_file = 'ranking_dataset.csv'
         with open(self.ranking_file, 'w') as f:
             w = csv.DictWriter(f, ['tokens', 'score', 'attention', 'alignment', 'positional_scores', 'target','group'])
             w.writeheader()
+
+    def prepare_infrence(self, finalized):
+        infr = np.zeros((1, 133))
+        fill = finalized['tokens'].numpy()
+        infr[0, :len(fill)] += fill[:133]
+        score = torch.tensor([finalized['score']])
+        infr = torch.from_numpy(np.expand_dims(infr, -1))
+        return infr, score
 
     def _get_nt(self, vocab):
         """
@@ -137,7 +174,6 @@ class ConstrainedSequenceGenerator(SequenceGenerator):
         # batch dimension goes first followed by source lengths
         bsz = input_size[0]
         src_len = input_size[1]
-        print(sample)
         beam_size = self.beam_size
         if self.match_source_len:
             max_len = src_lengths.max().item()
@@ -538,7 +574,13 @@ class ConstrainedSequenceGenerator(SequenceGenerator):
             # reorder incremental state in decoder
             reorder_state = active_bbsz_idx
 
-        print(finalized[0][0].keys())
+        #rescore
+        for i in range(len(finalized)):
+            beam = finalized[i]
+            for ex in beam:
+                infr, score = self.prepare_infrence(ex)
+                ex['score'] = self.model(infr.float(), score.float()).item()
+
         # sort by score descending
         for sent in range(len(finalized)):
             finalized[sent] = sorted(finalized[sent], key=lambda r: r['score'], reverse=True)
